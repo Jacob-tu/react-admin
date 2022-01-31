@@ -15,7 +15,7 @@ import {
 const menuList = [
   {
     title: "首页", // 菜单标题名称
-    path: "/home", // 对应的path
+    path: "/home", // 对应的path和key
     icon: <HomeOutlined />, // 图标名称
     isPublic: true, // 公开的
   },

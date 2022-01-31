@@ -17,13 +17,13 @@ export default function Admin(props) {
     }
   });
   return (
-    <Layout style={{ height: "100%" }}>
+    <Layout style={{ minHeight: "100%" }}>
       <Sider>
         <LeftNav />
       </Sider>
       <Layout>
         <Header></Header>
-        <Content style={{backgroundColor: '#fff'}}>
+        <Content style={{margin: '20px 20px 0px 20px', backgroundColor: '#fff'}}>
           <Outlet />
         </Content>
         <Footer style={{textAlign: 'center', color: '#cccccc'}}>推荐使用谷歌浏览器，可以获得更佳页面操作体验</Footer>

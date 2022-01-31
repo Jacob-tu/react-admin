@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import logo from "../../assets/images/logo.png";
 // 只能引入css，引入less无效
 import "./index.css";
-import { login } from "../../api";
+import { reqLogin } from "../../api";
 import { Form, Input, Button, message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
@@ -19,8 +19,7 @@ export default function Login(props) {
   })
 
   const onFinish = async (userInfo) => {
-    const { username, password } = userInfo;
-    let { data: res } = await login(username, password);
+    let res = await reqLogin(userInfo);
     if (res.status === 0) {
       message.success("登录成功！");
       const user = res.data

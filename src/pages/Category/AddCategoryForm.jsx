@@ -1,20 +1,14 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import { Form, Input, Select } from "antd";
-import { useEffect, useRef } from "react/cjs/react.development";
 
 const { Option } = Select;
 
-export default function AddCategoryForm(props) {
-  const { lev1_categoryList, parentId, setForm } = props;
-  const formEl = useRef(null);
-
-  useEffect(() => {
-    setForm(formEl.current);
-  }, [setForm]);
-
+const AddCategoryForm = forwardRef((props, ref) => {
+  const { lev1_categoryList, parentId } = props;
+  
   return (
     <Form
-      ref={formEl}
+      ref={ref}
       name="add_category_form"
       initialValues={{ parentId: parentId }}
       preserve={false}
@@ -46,4 +40,6 @@ export default function AddCategoryForm(props) {
       </Form.Item>
     </Form>
   );
-}
+})
+
+export default AddCategoryForm

@@ -10,6 +10,9 @@ export default function LeftNav(props) {
   // 得到当前路由路径
   let location = useLocation();
   let pathname = location.pathname;
+  if(pathname.indexOf("/product") === 0) {
+    pathname = '/product'
+  }
   let defaultOpenKeys = getDefaultOpenKeys(menuList, pathname);
 
   // 回溯法获取默认需要展开的子菜单key数组（根据路由路径），适用于多级子菜单

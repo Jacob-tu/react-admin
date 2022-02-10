@@ -46,7 +46,6 @@ export default function Category(props) {
       ),
     },
   ];
-
   // 第二个参数指定为空数组，则回调函数只会在组件componentDidMount生命周期执行
   useEffect(() => {
     getCategoryList("0")
@@ -165,12 +164,10 @@ export default function Category(props) {
         destroyOnClose={true}
       >
         <AddCategoryForm
+          // 给子组件加ref以获取子组件的表单数据，该方法比下面那种方法好
+          ref={addFormRef}
           lev1_categoryList={lev1_categoryListRef.current}
           parentId={parentIdRef.current}
-          setForm={(form) => {
-            // 子组件向父组件传递form实例存放在Ref中
-            addFormRef.current = form;
-          }}
         />
       </Modal>
       <Modal

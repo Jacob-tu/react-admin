@@ -28,6 +28,9 @@ export default function Header(props) {
   // 根据路由路径更新title
   let location = useLocation();
   let pathname = location.pathname;
+  if(pathname.indexOf("/product") === 0) {
+    pathname = '/product'
+  }
   useEffect(() => {
     const title = getTitle(menuList, pathname);
     // 更新title

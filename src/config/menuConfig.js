@@ -15,23 +15,27 @@ import {
 const menuList = [
   {
     title: "首页", // 菜单标题名称
-    path: "/home", // 对应的path和key
+    key: "/home",
+    path: "/home", 
     icon: <HomeOutlined />, // 图标名称
     isPublic: true, // 公开的
   },
   {
     title: "商品",
+    key: "/products",
     path: "/products",
     icon: <AppstoreOutlined />,
     children: [
       // 子菜单列表
       {
         title: "品类管理",
+        key: "/category",
         path: "/category",
         icon: <BarsOutlined />,
       },
       {
         title: "商品管理",
+        key: "/product",
         path: "/product",
         icon: <ToolOutlined />,
       },
@@ -40,32 +44,38 @@ const menuList = [
 
   {
     title: "用户管理",
+    key: "/user",
     path: "/user",
     icon: <UserOutlined />,
   },
   {
     title: "角色管理",
+    key: "/role",
     path: "/role",
     icon: <SafetyOutlined />,
   },
 
   {
     title: "图形图表",
+    key: "/charts",
     path: "/charts",
     icon: <AreaChartOutlined />,
     children: [
       {
         title: "柱形图",
+        key: "/charts/bar",
         path: "/charts/bar",
         icon: <BarChartOutlined />,
       },
       {
         title: "折线图",
+        key: "/charts/line",
         path: "/charts/line",
         icon: <LineChartOutlined />,
       },
       {
         title: "饼图",
+        key: "/charts/pie",
         path: "/charts/pie",
         icon: <PieChartOutlined />,
       },
@@ -73,6 +83,7 @@ const menuList = [
   },
   {
     title: "订单管理",
+    key: "/order",
     path: "/order",
     icon: <WindowsOutlined />,
   },

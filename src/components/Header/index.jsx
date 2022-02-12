@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "./index.css";
-// import logo from '../../assets/images/logo.png'
 import dayjs from "dayjs";
 import menuList from "../../config/menuConfig";
 import { useLocation, useNavigate } from "react-router-dom";

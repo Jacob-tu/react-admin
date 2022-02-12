@@ -32,6 +32,13 @@ export const reqAddProduct = (product) =>
   ajax(BASE + "/manage/product/add", product, "POST");
 export const reqUpdateProduct = (product) =>
   ajax(BASE + "/manage/product/update", product, "POST");
+export const reqGetRoleList = () =>
+  ajax(BASE + "/manage/role/list", undefined, "GET");
+export const reqAddRole = (roleName) =>
+  ajax(BASE + "/manage/role/add", { roleName }, "POST");
+export const reqUpdateRole = (role) => ajax(BASE + "/manage/role/update", role, "POST")
+
+
 
 // 请求天气的接口，暂不可用
 // export const reqWeather = (city) => {

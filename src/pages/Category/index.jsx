@@ -7,7 +7,7 @@ import {
   reqUpdateCategory,
 } from "../../api";
 import AddCategoryForm from "./AddCategoryForm";
-import UpdateCategoryForm from "./UpdateForm";
+import UpdateCategoryForm from "./UpdateCategoryForm";
 
 export default function Category(props) {
   let [title, setTitle] = useState("一级分类列表");

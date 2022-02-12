@@ -1,6 +1,4 @@
 import React from "react";
-// 按需引入antd组件
-import {} from "antd";
 // 引入antd.css
 import "./App.css";
 import { Routes, Route, Navigate } from "react-router-dom";

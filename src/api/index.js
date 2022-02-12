@@ -36,9 +36,16 @@ export const reqGetRoleList = () =>
   ajax(BASE + "/manage/role/list", undefined, "GET");
 export const reqAddRole = (roleName) =>
   ajax(BASE + "/manage/role/add", { roleName }, "POST");
-export const reqUpdateRole = (role) => ajax(BASE + "/manage/role/update", role, "POST")
-
-
+export const reqUpdateRole = (role) =>
+  ajax(BASE + "/manage/role/update", role, "POST");
+export const reqGetUserList = () =>
+  ajax(BASE + "/manage/user/list", undefined, "GET");
+export const reqDeleteUser = (userId) =>
+  ajax(BASE + "/manage/user/delete", { userId }, "POST");
+export const reqAddUser = (userInfo) =>
+  ajax(BASE + "/manage/user/add", userInfo, "POST");
+export const reqUpdateUser = (userInfo) =>
+  ajax(BASE + "/manage/user/update", userInfo, "POST");
 
 // 请求天气的接口，暂不可用
 // export const reqWeather = (city) => {

@@ -6,6 +6,7 @@ const AddRoleForm = forwardRef((props, ref) => {
     <Form
       ref={ref}
       name="add_role_form"
+      autoComplete="off"
     >
       <Form.Item
         label="角色名称"

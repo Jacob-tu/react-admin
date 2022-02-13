@@ -2,10 +2,18 @@ import React, { useEffect, useState, useRef } from "react";
 import { Card, Table, Button, Modal, message } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { PAGE_SIZE } from "../../utils/constant";
-import { reqDeleteUser, reqGetUserList, reqAddUser, reqUpdateUser } from "../../api";
+import {
+  reqDeleteUser,
+  reqGetUserList,
+  reqAddUser,
+  reqUpdateUser,
+} from "../../api";
 import dayjs from "dayjs";
 import AddUserForm from "./AddUserForm";
 import UpdateUserForm from "./UpdateUserForm";
+import memoryUtils from "../../utils/memoryUtils";
+import storageUtils from "../../utils/storageUtils";
+import { useNavigate } from "react-router-dom";
 
 export default function User(props) {
   const [users, setUsers] = useState([]);
@@ -17,6 +25,7 @@ export default function User(props) {
   const rolesRef = useRef([]);
   // 存储将要修改的角色对象
   const userRef = useRef(null);
+  let navigate = useNavigate();
   const title = (
     <Button type="primary" onClick={() => setIsShowAdd(true)}>
       添加用户
@@ -123,19 +132,32 @@ export default function User(props) {
     const form = UpdateUserFormRef.current;
     form
       .validateFields()
-      .then(async(userInfo) => {
-        userInfo._id = userRef.current._id
-        const res = await reqUpdateUser(userInfo)
-        if(res.status === 0) {
-          message.success("更新成功!")
-          setIsShowUpdate(false)
-          getUserList()
-            .then(({ users }) => {
-              setUsers(users);
-            })
-            .catch((err) => err);
-        }else if(res.status === 1) {
-          message.info(res.msg)
+      .then(async (userInfo) => {
+        const prevRoleId = userRef.current.role_id,
+          newRoleId = userInfo.role_id;
+        userInfo._id = userRef.current._id;
+        const res = await reqUpdateUser(userInfo);
+        if (res.status === 0) {
+          setIsShowUpdate(false);
+          // 如果更新的是当前用户并且修改了当前用户的角色，则重新登录
+          if (
+            memoryUtils.user._id === userRef.current._id &&
+            newRoleId !== prevRoleId
+          ) {
+            memoryUtils.user = {};
+            storageUtils.removeUser();
+            navigate("/login", { replace: true });
+            message.info("权限更新,请重新登录");
+          } else {
+            message.success("更新成功!");
+            getUserList()
+              .then(({ users }) => {
+                setUsers(users);
+              })
+              .catch((err) => err);
+          }
+        } else if (res.status === 1) {
+          message.info(res.msg);
         }
       })
       .catch((err) => err);
@@ -169,7 +191,11 @@ export default function User(props) {
         onCancel={() => setIsShowUpdate(false)}
         destroyOnClose={true}
       >
-        <UpdateUserForm ref={UpdateUserFormRef} roles={rolesRef.current} user={userRef.current}/>
+        <UpdateUserForm
+          ref={UpdateUserFormRef}
+          roles={rolesRef.current}
+          user={userRef.current}
+        />
       </Modal>
     </>
   );

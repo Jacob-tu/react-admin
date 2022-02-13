@@ -66,7 +66,7 @@ export default function Header(props) {
   return (
     <div className="header">
       <div className="header-top">
-        <span>欢迎，admin</span>
+        <span>欢迎，{memoryUtils.user.username}</span>
         <Button type="link" onClick={logout}>
           退出
         </Button>

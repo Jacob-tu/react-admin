@@ -48,14 +48,8 @@ export default function Login(props) {
             rules={[
               {
                 required: true,
-                message: "用户名不能为空",
+                message: "请输入用户名",
                 whitespace: true,
-              },
-              { min: 4, message: "长度不能小于4位" },
-              { max: 12, message: "长度不能大于12位" },
-              {
-                pattern: /^[a-zA-Z0-9_]+$/,
-                message: "只能输入数字、字母或下划线",
               },
             ]}
           >
@@ -69,17 +63,9 @@ export default function Login(props) {
             name="password"
             rules={[
               {
-                validator: (_, value) => {
-                  if (!value) {
-                    return Promise.reject(new Error("密码不能为空"));
-                  } else if (value.length < 3) {
-                    return Promise.reject(new Error("长度不能小于3位"));
-                  } else if (value.length > 12) {
-                    return Promise.reject(new Error("长度不能大于12位"));
-                  } else {
-                    return Promise.resolve();
-                  }
-                },
+                required: true,
+                message: "请输入密码",
+                whitespace: true,
               },
             ]}
           >

@@ -6,8 +6,6 @@ const { Option } = Select;
 const UpdateUserForm = forwardRef((props, ref) => {
   const {roles, user} = props
   const {username, phone, email, role_id} = user
-  const onFinish = () => {};
-  const handleChange = () => {};
   return (
     <Form
       ref={ref}
@@ -15,7 +13,6 @@ const UpdateUserForm = forwardRef((props, ref) => {
       labelCol={{ span: 5 }}
       wrapperCol={{ span: 16 }}
       initialValues={{username, phone, email, role_id}}
-      onFinish={onFinish}
       autoComplete="off"
     >
       <Form.Item
@@ -35,7 +32,7 @@ const UpdateUserForm = forwardRef((props, ref) => {
         label="角色"
         name="role_id"
       >
-        <Select placeholder="请分配角色" onChange={handleChange}>
+        <Select placeholder="请分配角色">
           {
             roles.map((role) => 
               <Option value={role._id} key={role._id}>{role.name}</Option>

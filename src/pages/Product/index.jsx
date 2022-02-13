@@ -19,7 +19,7 @@ export default function Product(props) {
   const [loading, setLoading] = useState(false);
   const [searchType, setSearchType] = useState("productName");
   const [searchName, setSearchName] = useState("");
-  const pageNumRef = useRef(null);
+  const pageNumRef = useRef(1);
   let navigate = useNavigate();
 
   useEffect(() => {
@@ -113,6 +113,7 @@ export default function Product(props) {
 
   // 获取商品分页列表
   async function getProductList(pageNum) {
+    // 更新当前页码
     pageNumRef.current = pageNum;
     let res;
     setLoading(true);
@@ -147,6 +148,7 @@ export default function Product(props) {
           bordered
           loading={loading}
           pagination={{
+            current: pageNumRef.current,
             pageSize: PAGE_SIZE,
             total,
             showQuickJumper: true,

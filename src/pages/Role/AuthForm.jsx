@@ -31,7 +31,7 @@ function AuthForm(props, ref) {
         checkable
         treeData={treeData}
         defaultExpandAll={true}
-        checkedKeys={checkedKeys}
+        checkedKeys={[...checkedKeys, '/home']}
         onCheck={onCheck}
       />
     </>

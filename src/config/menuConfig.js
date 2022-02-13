@@ -18,7 +18,8 @@ const menuList = [
     key: "/home",
     path: "/home", 
     icon: <HomeOutlined />, // 图标名称
-    isPublic: true, // 公开的
+    isPublic: true, // 默认拥有的菜单权限
+    disabled: true, // 默认拥有的菜单权限，树形控件中禁用
   },
   {
     title: "商品",

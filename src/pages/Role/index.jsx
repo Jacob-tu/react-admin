@@ -5,6 +5,8 @@ import { reqGetRoleList, reqAddRole, reqUpdateRole } from "../../api";
 import AddRoleForm from "./AddRoleForm";
 import AuthForm from "./AuthForm";
 import memoryUtils from "../../utils/memoryUtils";
+import storageUtils from "../../utils/storageUtils";
+import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs"
 
 export default function Role(props) {
@@ -14,6 +16,7 @@ export default function Role(props) {
   const [isShowAuth, setIsShowAuth] = useState(false);
   const addFormRef = useRef(null);
   const authFormRef = useRef(null);
+  let navigate = useNavigate()
 
   useEffect(() => {
     getRoleList()
@@ -51,7 +54,7 @@ export default function Role(props) {
     {
       title: "授权时间",
       dataIndex: "auth_time",
-      render: (auth_time) => dayjs(auth_time).format("YYYY-MM-DD HH:mm:ss")
+      render: (auth_time) => auth_time ? dayjs(auth_time).format("YYYY-MM-DD HH:mm:ss") : null
     },
     {
       title: "授权人",
@@ -87,7 +90,7 @@ export default function Role(props) {
           message.error("添加角色失败！");
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => err);
   };
   const updateRole = async () => {
     const { _id } = selectedRole;
@@ -95,15 +98,24 @@ export default function Role(props) {
     const auth_time = Date.now();
     const auth_name = memoryUtils.user.username;
     const updatedRole = { _id, menus, auth_time, auth_name };
+    const prevMenus = memoryUtils.user.role.menus
     const res = await reqUpdateRole(updatedRole);
     if (res.status === 0) {
-      message.success("角色授权成功！");
       setIsShowAuth(false);
-      // 更新选中的角色
-      setSelectedRole(prevSelectedRole => ({...prevSelectedRole, ...updatedRole}))
-      // 获取最新的角色列表数据
-      const roleList = await getRoleList()
-      setRoleList(roleList)  
+      // 如果当前更新的是自己角色的权限并且权限有变化, 返回登录界面
+      if(selectedRole._id === memoryUtils.user.role_id && menus.sort().join() !== prevMenus.sort().join()) {
+        memoryUtils.user = {}
+        storageUtils.removeUser()
+        navigate('/login', {replace: true})
+        message.info("权限更新,请重新登录")
+      }else {
+        message.success("角色授权成功！");
+        // 更新选中的角色
+        setSelectedRole(prevSelectedRole => ({...prevSelectedRole, ...updatedRole}))
+        // 获取最新的角色列表数据
+        const roleList = await getRoleList()
+        setRoleList(roleList)  
+      }
     } else {
       message.error("角色授权失败！");
     }

@@ -3,6 +3,7 @@ import "./index.css";
 import logo from "../../assets/images/logo.png";
 import { Menu } from "antd";
 import menuList from "../../config/menuConfig";
+import memoryUtils from "../../utils/memoryUtils";
 
 const { SubMenu } = Menu;
 
@@ -38,12 +39,28 @@ export default function LeftNav(props) {
       }
     }
   }
+  // 判断item是否存在menus中
+  function hasAuth(item, menus) {
+    const {key} = item
+    if(menus.indexOf(key)!== -1){
+      // 拥有该权限
+      return true
+    }else if(item.children) {
+      // 是否拥有该菜单的子菜单权限
+      return !!item.children.find(item => menus.indexOf(item.key)!==-1)
+    }else {
+      return false
+    }
+  }
   function getMenuItem(menuList) {
+    const menus = memoryUtils.user.role.menus
+    const username = memoryUtils.user.username
     return menuList.map((item) => {
       /*
        *  item项：
        *  {
        *    title: '商品',
+       *    key: '/products',
        *    path: '/products',
        *    icon: <AppstoreOutlined />,
        *    children: [ // 子菜单列表
@@ -51,15 +68,21 @@ export default function LeftNav(props) {
        *    ]
        *  }
        */
-      return item.children ? (
-        <SubMenu key={item.path} icon={item.icon} title={item.title}>
-          {getMenuItem(item.children)}
-        </SubMenu>
-      ) : (
-        <Menu.Item key={item.path} icon={item.icon}>
-          <Link to={item.path}>{item.title}</Link>
-        </Menu.Item>
-      );
+      const {isPublic} = item
+      // admin用户展示所有菜单，isPublic是默认展示的菜单，判断当前用户是否拥有该菜单权限
+      if(username === 'admin' || isPublic || hasAuth(item, menus)) {
+        return item.children ? (
+          <SubMenu key={item.path} icon={item.icon} title={item.title}>
+            {getMenuItem(item.children)}
+          </SubMenu>
+        ) : (
+          <Menu.Item key={item.path} icon={item.icon}>
+            <Link to={item.path}>{item.title}</Link>
+          </Menu.Item>
+        );
+      }else {
+        return null
+      }
     });
   }
 

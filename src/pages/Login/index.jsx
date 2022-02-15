@@ -2,33 +2,40 @@ import React, { useEffect } from "react";
 import logo from "../../assets/images/logo.png";
 // 只能引入css，引入less无效
 import "./index.css";
-import { reqLogin } from "../../api";
-import { Form, Input, Button, message } from "antd";
+// import { reqLogin } from "../../api";
+import { Form, Input, Button } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import memoryUtils from "../../utils/memoryUtils";
-import storageUtils from "../../utils/storageUtils";
+// import memoryUtils from "../../utils/memoryUtils";
+// import storageUtils from "../../utils/storageUtils";
+import { connect } from "react-redux";
+import { login } from "../../redux/actions";
 
-export default function Login(props) {
+function Login(props) {
   let navigate = useNavigate();
   useEffect(() => {
-    const user = memoryUtils.user
-    if(user._id) {
-      navigate('/')
+    // 如果用户已经登录直接跳转到首页
+    // const user = memoryUtils.user
+    const user = props.user;
+    if (user?._id) {
+      navigate("/home");
     }
-  })
+  }, [navigate, props.user]);
 
   const onFinish = async (userInfo) => {
+    /*改为redux派发异步action
     let res = await reqLogin(userInfo);
     if (res.status === 0) {
       message.success("登录成功！");
       const user = res.data
       memoryUtils.user = user // 存储在内存
       storageUtils.saveUser(user) // 存储在本地
-      navigate('/', {replace: true})
+      navigate('/home', {replace: true})
     } else {
       message.error(res.msg);
     }
+    */
+    props.login(userInfo);
   };
   return (
     <div className="login">
@@ -38,11 +45,7 @@ export default function Login(props) {
       </header>
       <section className="login-content">
         <h2>用户登录</h2>
-        <Form
-          name="normal_login"
-          className="login-form"
-          onFinish={onFinish}
-        >
+        <Form name="normal_login" className="login-form" onFinish={onFinish}>
           <Form.Item
             name="username"
             rules={[
@@ -91,3 +94,5 @@ export default function Login(props) {
     </div>
   );
 }
+
+export default connect((state) => ({ user: state.user }), { login })(Login);

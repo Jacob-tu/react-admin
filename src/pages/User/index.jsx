@@ -11,11 +11,13 @@ import {
 import dayjs from "dayjs";
 import AddUserForm from "./AddUserForm";
 import UpdateUserForm from "./UpdateUserForm";
-import memoryUtils from "../../utils/memoryUtils";
-import storageUtils from "../../utils/storageUtils";
-import { useNavigate } from "react-router-dom";
+// import memoryUtils from "../../utils/memoryUtils";
+// import storageUtils from "../../utils/storageUtils";
+// import { useNavigate } from "react-router-dom";
+import { connect } from "react-redux";
+import {logout} from "../../redux/actions"
 
-export default function User(props) {
+function User(props) {
   const [users, setUsers] = useState([]);
   const [isShowAdd, setIsShowAdd] = useState(false);
   const [isShowUpdate, setIsShowUpdate] = useState(false);
@@ -25,7 +27,7 @@ export default function User(props) {
   const rolesRef = useRef([]);
   // 存储将要修改的角色对象
   const userRef = useRef(null);
-  let navigate = useNavigate();
+  // let navigate = useNavigate();
   const title = (
     <Button type="primary" onClick={() => setIsShowAdd(true)}>
       添加用户
@@ -141,12 +143,13 @@ export default function User(props) {
           setIsShowUpdate(false);
           // 如果更新的是当前用户并且修改了当前用户的角色，则重新登录
           if (
-            memoryUtils.user._id === userRef.current._id &&
+            props.user._id === userRef.current._id &&
             newRoleId !== prevRoleId
           ) {
-            memoryUtils.user = {};
-            storageUtils.removeUser();
-            navigate("/login", { replace: true });
+            // memoryUtils.user = {};
+            // storageUtils.removeUser();
+            // navigate("/login", { replace: true });
+            props.logout();
             message.info("权限更新,请重新登录");
           } else {
             message.success("更新成功!");
@@ -200,3 +203,8 @@ export default function User(props) {
     </>
   );
 }
+
+export default connect(
+  state => ({user: state.user}),
+  {logout}
+)(User)

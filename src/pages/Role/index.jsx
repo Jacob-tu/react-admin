@@ -4,19 +4,21 @@ import { PAGE_SIZE } from "../../utils/constant";
 import { reqGetRoleList, reqAddRole, reqUpdateRole } from "../../api";
 import AddRoleForm from "./AddRoleForm";
 import AuthForm from "./AuthForm";
-import memoryUtils from "../../utils/memoryUtils";
-import storageUtils from "../../utils/storageUtils";
-import { useNavigate } from "react-router-dom";
+// import memoryUtils from "../../utils/memoryUtils";
+// import storageUtils from "../../utils/storageUtils";
+// import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs"
+import { connect } from "react-redux";
+import {logout} from "../../redux/actions"
 
-export default function Role(props) {
+function Role(props) {
   const [roleList, setRoleList] = useState([]);
   const [selectedRole, setSelectedRole] = useState({});
   const [isShowAdd, setIsShowAdd] = useState(false);
   const [isShowAuth, setIsShowAuth] = useState(false);
   const addFormRef = useRef(null);
   const authFormRef = useRef(null);
-  let navigate = useNavigate()
+  // let navigate = useNavigate()
 
   useEffect(() => {
     getRoleList()
@@ -96,17 +98,18 @@ export default function Role(props) {
     const { _id } = selectedRole;
     const { checkedKeys: menus } = authFormRef.current;
     const auth_time = Date.now();
-    const auth_name = memoryUtils.user.username;
+    const auth_name = props.user.username;
     const updatedRole = { _id, menus, auth_time, auth_name };
-    const prevMenus = memoryUtils.user.role.menus
+    const prevMenus = props.user.role.menus
     const res = await reqUpdateRole(updatedRole);
     if (res.status === 0) {
       setIsShowAuth(false);
       // 如果当前更新的是自己角色的权限并且权限有变化, 返回登录界面
-      if(selectedRole._id === memoryUtils.user.role_id && menus.sort().join() !== prevMenus.sort().join()) {
-        memoryUtils.user = {}
-        storageUtils.removeUser()
-        navigate('/login', {replace: true})
+      if(selectedRole._id === props.user.role_id && menus.sort().join() !== prevMenus.sort().join()) {
+        // memoryUtils.user = {}
+        // storageUtils.removeUser()
+        // navigate('/login', {replace: true})
+        props.logout()
         message.info("权限更新,请重新登录")
       }else {
         message.success("角色授权成功！");
@@ -161,3 +164,8 @@ export default function Role(props) {
     </>
   );
 }
+
+export default connect(
+  state => ({user: state.user}),
+  {logout}
+)(Role)

@@ -3,11 +3,13 @@ import "./index.css";
 import logo from "../../assets/images/logo.png";
 import { Menu } from "antd";
 import menuList from "../../config/menuConfig";
-import memoryUtils from "../../utils/memoryUtils";
+// import memoryUtils from "../../utils/memoryUtils";
+import { connect } from "react-redux";
+import { setHeadTitle } from "../../redux/actions";
 
 const { SubMenu } = Menu;
 
-export default function LeftNav(props) {
+function LeftNav(props) {
   // 得到当前路由路径
   let location = useLocation();
   let pathname = location.pathname;
@@ -53,8 +55,10 @@ export default function LeftNav(props) {
     }
   }
   function getMenuItem(menuList) {
-    const menus = memoryUtils.user.role.menus
-    const username = memoryUtils.user.username
+    // const menus = memoryUtils.user.role.menus
+    // const username = memoryUtils.user.username
+    const menus = props.user.role.menus
+    const username = props.user.username
     return menuList.map((item) => {
       /*
        *  item项：
@@ -68,6 +72,10 @@ export default function LeftNav(props) {
        *    ]
        *  }
        */
+      if(item.path === pathname) {
+        // 初始化title
+        props.setHeadTitle(item.title)
+      }
       const {isPublic} = item
       // admin用户展示所有菜单，isPublic是默认展示的菜单，判断当前用户是否拥有该菜单权限
       if(username === 'admin' || isPublic || hasAuth(item, menus)) {
@@ -77,7 +85,7 @@ export default function LeftNav(props) {
           </SubMenu>
         ) : (
           <Menu.Item key={item.path} icon={item.icon}>
-            <Link to={item.path}>{item.title}</Link>
+            <Link to={item.path} onClick={() => props.setHeadTitle(item.title)}>{item.title}</Link>
           </Menu.Item>
         );
       }else {
@@ -113,3 +121,8 @@ export default function LeftNav(props) {
     </div>
   );
 }
+
+export default connect(
+  state => ({user: state.user}),
+  {setHeadTitle}
+)(LeftNav)

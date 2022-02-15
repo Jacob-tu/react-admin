@@ -1,21 +1,28 @@
-import React, { useEffect } from "react";
-import { useNavigate, Outlet } from "react-router-dom";
-import memoryUtils from "../../utils/memoryUtils";
+import React from "react";
+import { Outlet, Navigate } from "react-router-dom";
+// import memoryUtils from "../../utils/memoryUtils";
 import { Layout } from "antd";
 import LeftNav from "../../components/LeftNav";
 import Header from "../../components/Header";
+import { connect } from "react-redux";
 
 const { Footer, Sider, Content } = Layout;
 
-export default function Admin(props) {
-  let navigate = useNavigate();
-  const user = memoryUtils.user;
+function Admin(props) {
+  // let navigate = useNavigate();
+  // const user = memoryUtils.user;
+  const user = props.user;
 
-  useEffect(() => {
-    if (!user._id) {
-      navigate("/login", { replace: true });
-    }
-  });
+  // useNavigate() 钩子只能在放在useEffect中导致组件挂载后才会进行路由跳转，从而在LeftNav组件中报错
+  // 这里适合用<Navigate />标签式进行路由跳转
+  // useEffect(() => {
+  //   if (!user._id) {
+  //     navigate("/login", { replace: true });
+  //   }
+  // }, [navigate, user._id]);
+  if (!user._id) {
+    return <Navigate to="/login" replace /> // 跳转到登录
+  }
   return (
     <Layout style={{ minHeight: "100%" }}>
       <Sider>
@@ -31,3 +38,8 @@ export default function Admin(props) {
     </Layout>
   );
 }
+
+export default connect(
+  state => ({user: state.user}),
+  {}
+)(Admin)

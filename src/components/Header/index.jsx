@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
 import "./index.css";
 import dayjs from "dayjs";
-import menuList from "../../config/menuConfig";
-import { useLocation, useNavigate } from "react-router-dom";
+// import menuList from "../../config/menuConfig";
+// import {  useNavigate } from "react-router-dom";
 import { Modal, Button } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
-import memoryUtils from "../../utils/memoryUtils";
-import storageUtils from "../../utils/storageUtils";
+// import memoryUtils from "../../utils/memoryUtils";
+// import storageUtils from "../../utils/storageUtils";
+import { connect } from "react-redux";
+import { logout } from "../../redux/actions";
 
 const { confirm } = Modal;
 
-export default function Header(props) {
-  let navigate = useNavigate();
-  const [title, setTitle] = useState("");
+function Header(props) {
+  // let navigate = useNavigate();
+  // const [title, setTitle] = useState("");
 
   const [curTime, setCurTime] = useState(dayjs().format("YYYY-MM-DD HH:mm:ss"));
   useEffect(() => {
@@ -22,14 +24,15 @@ export default function Header(props) {
     return () => {
       clearInterval(intervalId);
     };
-  });
+  }, []);
 
   // 根据路由路径更新title
-  let location = useLocation();
-  let pathname = location.pathname;
-  if(pathname.indexOf("/product") === 0) {
-    pathname = '/product'
-  }
+  // let location = useLocation();
+  // let pathname = location.pathname;
+  // if(pathname.indexOf("/product") === 0) {
+  //   pathname = '/product'
+  // }
+  /*已改为用redux存储title
   useEffect(() => {
     const title = getTitle(menuList, pathname);
     // 更新title
@@ -49,6 +52,7 @@ export default function Header(props) {
       }
     }
   }, [pathname]);
+  */
 
   const logout = () => {
     confirm({
@@ -56,9 +60,10 @@ export default function Header(props) {
       icon: <ExclamationCircleOutlined />,
       content: "将返回登录页面",
       onOk() {
-        storageUtils.removeUser();
-        memoryUtils.user = {};
-        navigate("/login", { replace: true });
+        // storageUtils.removeUser();
+        // memoryUtils.user = {};
+        // navigate("/login", { replace: true });
+        props.logout();
       },
     });
   };
@@ -66,14 +71,14 @@ export default function Header(props) {
   return (
     <div className="header">
       <div className="header-top">
-        <span>欢迎，{memoryUtils.user.username}</span>
+        <span>欢迎，{props.user.username}</span>
         <Button type="link" onClick={logout}>
           退出
         </Button>
       </div>
       <div className="header-buttom">
         <div className="header-buttom-left">
-          <span>{title}</span>
+          <span>{props.headTitle}</span>
         </div>
         <div className="header-buttom-right">
           <span>{curTime}</span>
@@ -85,3 +90,9 @@ export default function Header(props) {
     </div>
   );
 }
+
+export default connect(
+  // 传入store中的headTitle数据
+  (state) => ({ headTitle: state.headTitle, user: state.user }),
+  { logout }
+)(Header);

@@ -1,3 +1,4 @@
+import React, {useEffect, useRef} from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./index.css";
 import logo from "../../assets/images/logo.png";
@@ -12,6 +13,12 @@ const { SubMenu } = Menu;
 function LeftNav(props) {
   // 得到当前路由路径
   let location = useLocation();
+  const titleRef = useRef(null)
+  useEffect(() => {
+    // 组件挂载之后调用一次,更新redux中的状态
+    props.setHeadTitle(titleRef.current)
+  }, [props])
+
   let pathname = location.pathname;
   if(pathname.indexOf("/product") === 0) {
     pathname = '/product'
@@ -74,7 +81,9 @@ function LeftNav(props) {
        */
       if(item.path === pathname) {
         // 初始化title
-        props.setHeadTitle(item.title)
+        // 不能再组件渲染时更新redux中的状态，因为这样会改变其他组件的状态，导致报错，应再useEffect中更新状态
+        // props.setHeadTitle(item.title)
+        titleRef.current = item.title
       }
       const {isPublic} = item
       // admin用户展示所有菜单，isPublic是默认展示的菜单，判断当前用户是否拥有该菜单权限

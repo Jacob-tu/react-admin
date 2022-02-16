@@ -7,7 +7,7 @@ import { SET_HEAD_TITLE, SAVE_USER, CLEAR_USER } from "./action-types";
 /*
 用来管理头部标题的reducer函数
  */
-const initHeadTitle = "首页"
+const initHeadTitle = ""
 function headTitle(state=initHeadTitle, action) {
   const {type, data} = action
   switch (type) {

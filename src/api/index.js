@@ -4,7 +4,7 @@ import ajax from "./ajax";
 
 // const BASE = 'http://localhost:5000'
 // 本来应该请求5000端口的服务器，由于跨域所以配置代理服务器3000端口，请求3000端口的代理服务器进行转发
-const BASE = "http://localhost:3000";
+const BASE = "";
 
 export const reqLogin = (userInfo) => ajax(BASE + "/login", userInfo, "POST");
 export const reqGetCategoryList = (parentId) =>

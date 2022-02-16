@@ -14,7 +14,7 @@ import User from "./pages/User";
 import Bar from "./pages/Charts/Bar";
 import Line from "./pages/Charts/Line";
 import Pie from "./pages/Charts/Pie";
-import Error from "./pages/404";
+import NotFound from "./pages/NotFound";
 
 export default function App(props) {
   return (
@@ -32,7 +32,7 @@ export default function App(props) {
           <Route path="charts/pie" element={<Pie />} />
           <Route path="charts/line" element={<Line />} />
           <Route path="/" element={<Navigate replace to="/home" />} />
-          <Route path="*" element={<Error />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
         <Route path="/login" element={<Login />} />
       </Routes>

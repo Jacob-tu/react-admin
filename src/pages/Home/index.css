@@ -9,7 +9,7 @@
 .home .home-content {
   position: absolute;
   top: 420px;
-  width: 76%;
+  width: 80%;
   border: 1px solid #e8e8e8;
 }
 .home .home-content .home-menu {
@@ -32,5 +32,5 @@
 }
 .home .home-content .home-table-right {
   float: right;
-  width: 330px;
+  width: 30%;
 }

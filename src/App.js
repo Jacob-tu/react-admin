@@ -7,14 +7,15 @@ import Admin from "./pages/Admin";
 import Home from "./pages/Home";
 import Category from "./pages/Category";
 import Product from "./pages/Product";
-import AddUpdate from './pages/Product/AddUpdate'
-import Detail from './pages/Product/Detail'
+import AddUpdate from "./pages/Product/AddUpdate";
+import Detail from "./pages/Product/Detail";
 import Role from "./pages/Role";
 import User from "./pages/User";
 import Bar from "./pages/Charts/Bar";
 import Line from "./pages/Charts/Line";
 import Pie from "./pages/Charts/Pie";
 import NotFound from "./pages/NotFound";
+import Order from "./pages/Order";
 
 export default function App(props) {
   return (
@@ -31,6 +32,7 @@ export default function App(props) {
           <Route path="charts/bar" element={<Bar />} />
           <Route path="charts/pie" element={<Pie />} />
           <Route path="charts/line" element={<Line />} />
+          <Route path="order" element={<Order />} />
           <Route path="/" element={<Navigate replace to="/home" />} />
           <Route path="*" element={<NotFound />} />
         </Route>

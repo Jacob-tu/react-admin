@@ -72,8 +72,8 @@ function Header(props) {
     <div className="header">
       <div className="header-top">
         <span>欢迎，{props.user.username}</span>
-        <Button type="link" onClick={logout}>
-          退出
+        <Button type="primary" onClick={logout}>
+          <div>退出</div>
         </Button>
       </div>
       <div className="header-buttom">

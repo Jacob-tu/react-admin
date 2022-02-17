@@ -42,7 +42,7 @@ export default class Bar extends React.Component {
         sales: 38
       },
       {
-        year: "59月",
+        year: "9月",
         sales: 68
       },
       {
